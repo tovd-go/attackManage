@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tovd.org.mapper.EmailMapper">
+    <insert id="insertEmail" parameterType="com.tovd.org.entity.Email">
+        insert into sys_email (subjectName,emailName,emailFrom,emailAll) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.subjectName},#{item.emailName},#{item.emailFrom},#{item.emailAll})
+        </foreach>
+    </insert>
+
+    <select id="loadId" resultType="Integer">
+        select count(*) from sys_email where 1=1
+        <if test="subjectName!=null">
+            and subjectName like "%"#{subjectName}"%"
+        </if>
+        <if test="emailName!=null">
+            and emailName like "%"#{emailName}"%"
+        </if>
+        <if test="emailFrom!=null">
+            and emailFrom like "%"#{emailFrom}"%"
+        </if>
+    </select>
+    <select id="load" resultType="com.tovd.org.entity.Email">
+        select * from sys_email where 1=1
+        <if test="subjectName!=null">
+            and subjectName like "%"#{subjectName}"%"
+        </if>
+        <if test="emailName!=null">
+            and emailName like "%"#{emailName}"%"
+        </if>
+        <if test="emailFrom!=null">
+            and emailFrom like "%"#{emailFrom}"%"
+        </if>
+        <if test="pageNum!=null">
+            limit #{pageNum},#{pageSize}
+        </if>
+    </select>
+    <delete id="delEmail">
+        delete from sys_email where 1=1
+        <if test="subjectName!=null">
+            and subjectName = #{subjectName}
+        </if>
+        <if test="emailName!=null">
+            and emailName = #{emailName}
+        </if>
+        <if test="emailFrom!=null">
+            and emailFrom =#{emailFrom}
+        </if>
+    </delete>
+
+</mapper>
